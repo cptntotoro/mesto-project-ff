@@ -2,6 +2,7 @@ import '../pages/index.css';
 import { initialCards } from "./cards";
 import { createCard, deleteCard, likeCard } from "./card";
 import { openModal, closeModal } from "./modal";
+import { enableValidation, clearValidation, validationSettings} from "./validation";
 
 const placesList = document.querySelector(".places__list");
 
@@ -11,11 +12,13 @@ const captionImagePopup = imagePopup.querySelector(".popup__caption");
 
 const addNewPlaceButton = document.querySelector(".profile__add-button");
 const newPlacePopup = document.querySelector(".popup.popup_type_new-card");
+const newPlaceForm = newPlacePopup.querySelector(".popup__form");
 const cardNameInput = newPlacePopup.querySelector(".popup__input_type_card-name");
 const cardUrlInput = newPlacePopup.querySelector(".popup__input_type_url");
 
 const editProfileButton = document.querySelector(".profile__edit-button");
 const editProfilePopup = document.querySelector(".popup.popup_type_edit");
+const editProfileForm = editProfilePopup.querySelector(".popup__form");
 const profileNameInput = editProfilePopup.querySelector(".popup__input_type_name");
 const profileDescriptionInput = editProfilePopup.querySelector(".popup__input_type_description");
 const profileName = document.querySelector(".profile__title");
@@ -34,12 +37,23 @@ initialCards.forEach((card) => {
 /**
  * Открытие и закрытие поп-апа добавления места
  */
-addNewPlaceButton.addEventListener("click", () => openModal(newPlacePopup));
+addNewPlaceButton.addEventListener("click", () => {
+    openModal(newPlacePopup);
+    clearValidation(newPlaceForm, validationSettings);
+});
 
 /**
  * Открытие и закрытие поп-апа редактирования профиля
  */
-editProfileButton.addEventListener("click", () => openEditProfileModal(editProfilePopup));
+editProfileButton.addEventListener("click", () => {
+    clearValidation(editProfileForm, validationSettings);
+    openEditProfileModal(editProfilePopup);
+});
+
+/**
+ * Включить валидацию форм поп-апов
+ */
+enableValidation(validationSettings);
 
 /**
  * Закрытие поп-апов по клику на крестик
