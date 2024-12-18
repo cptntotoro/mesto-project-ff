@@ -12,7 +12,7 @@ export const validationSettings = {
 
 /**
  * Включить валидацию всех форм
-*/
+ */
 export function enableValidation(validationSettings) {
     const forms = Array.from(document.querySelectorAll(validationSettings.formSelector));
 
@@ -82,7 +82,7 @@ function getValidityErrors(input) {
         validityErrors.push("Вы пропустили это поле.");
     }
 
-    if (input.validity.typeMismatch) {
+    if (inputValidity.typeMismatch) {
         validityErrors.push("Введите адрес сайта");
     }
 
