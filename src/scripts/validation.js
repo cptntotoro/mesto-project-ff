@@ -45,7 +45,7 @@ export function enableValidation(validationSettings) {
 /**
  * Очистить ошибки валидации формы и деактивировать кнопку
  */
-export function clearValidation(form, validationSettings) {
+export function clearValidation(form, validationSettings, renderLoading) {
     const inputs = Array.from(form.querySelectorAll(validationSettings.inputSelector));
     const button = form.querySelector(validationSettings.submitButtonSelector);
 
@@ -57,6 +57,7 @@ export function clearValidation(form, validationSettings) {
     });
 
     disableButton(button, validationSettings);
+    renderLoading(button, false);
 }
 
 /**
