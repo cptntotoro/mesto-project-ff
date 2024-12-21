@@ -1,3 +1,3 @@
 # Проектная работа Mesto
 
-https://github.com/cptntotoro/mesto-project-ff
+[Открыть проект на GitHub Pages](https://cptntotoro.github.io/mesto-project-ff/)
