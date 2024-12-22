@@ -27,12 +27,12 @@ export function enableValidation(validationSettings) {
         inputs.forEach(input => {
             input.addEventListener("input", () => {
                 const errorSpan = form.querySelector(`.${input.id}-error`);
-                const errors = getValidityErrors(input);
+                const error = getValidityError(input);
 
-                if (errors.length === 0) {
+                if (error === "") {
                     hideInputError(input, errorSpan, validationSettings);
                 } else {
-                    showInputError(input, errorSpan, errors, validationSettings);
+                    showInputError(input, errorSpan, error, validationSettings);
                 }
 
                 const someInputsInvalid = inputs.some(input => input.validity.valid === false);
@@ -61,32 +61,24 @@ export function clearValidation(form, validationSettings) {
 
 /**
  * Проверить пользовательский ввод
- * @return ошибки валидации
+ * @return ошибка валидации
  */
-function getValidityErrors(input) {
+function getValidityError(input) {
     const inputValidity = input.validity;
-    let validityErrors = [];
 
-    if (inputValidity.patternMismatch === true) {
-        validityErrors.push(input.dataset.errorMessage);
+    if (inputValidity.valid === false) {
+        if (inputValidity.patternMismatch === true) {
+            return input.dataset.errorMessage;
+        } else if (inputValidity.tooShort === true && inputValidity.valueMissing === false) {
+            const currentLength = input.value.length;
+            const minLength = input.minLength;
+            return "Минимальное количество символов: " + minLength + ". Длина текста сейчас: " + currentLength + " символ.";
+        } else {
+            return input.validationMessage;
+        }
+    } else {
+        return "";
     }
-
-    if (inputValidity.tooShort === true && inputValidity.valueMissing === false) {
-        const currentLength = input.value.length;
-        const minLength = input.minLength;
-        input.style.marginBottom = "5px";
-        validityErrors.push("Минимальное количество символов: " + minLength + ". Длина текста сейчас: " + currentLength + " символ.");
-    }
-
-    if (inputValidity.valueMissing === true) {
-        validityErrors.push("Вы пропустили это поле.");
-    }
-
-    if (inputValidity.typeMismatch) {
-        validityErrors.push("Введите адрес сайта");
-    }
-
-    return validityErrors;
 }
 
 /**
@@ -108,18 +100,16 @@ function enableButton(button, validationSettings) {
 /**
  * Отобразить ошибку ввода
  */
-function showInputError(input, errorSpan, errorMessages, validationSettings) {
-    input.style.marginBottom = "5px";
+function showInputError(input, errorSpan, errorMessage, validationSettings) {
     input.classList.add(validationSettings.inputErrorClass);
     errorSpan.classList.add(validationSettings.errorClass);
-    errorSpan.textContent = errorMessages.join(' ');
+    errorSpan.textContent = errorMessage;
 }
 
 /**
  * Скрыть ошибку ввода
  */
 function hideInputError(input, errorSpan, validationSettings) {
-    input.style.marginBottom = "0";
     input.classList.remove(validationSettings.inputErrorClass);
     errorSpan.classList.remove(validationSettings.errorClass);
     errorSpan.textContent = "";

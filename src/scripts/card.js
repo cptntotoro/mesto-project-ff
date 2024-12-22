@@ -2,8 +2,13 @@ import { toggleLike, removeCard } from "./api";
 
 /**
  * Создать карточку
+ * @param card - объект карточки см {@link getCards()}
+ * @param userId - идентификатор текущего пользователя
+ * @param deleteCard - функция удаления карточки
+ * @param setLike - функция переключения лайка карточки
+ * @param showImagePopup - функция отображения поп-апа по клику на картинку карточки
  */
-export function createCard(card, deleteCard, setLike, showImagePopup, userId) {
+export function createCard(card, userId, {deleteCard, setLike, showImagePopup}) {
     const cardTemplate = document.querySelector("#card-template");
     const cardElement = cardTemplate.content
         .querySelector(".card")
@@ -49,7 +54,7 @@ export function createCard(card, deleteCard, setLike, showImagePopup, userId) {
  * Удалить карточку
  */
 export function deleteCard(cardId, cardElement) {
-    removeCard(cardId).then(() => cardElement.remove());
+    removeCard(cardId).then(() => cardElement.remove()).catch(console.error);
 }
 
 /**
@@ -61,5 +66,5 @@ export async function setLike(likeButton, likeCount, cardId) {
     toggleLike(cardId, !isLiked).then(updatedCard => {
         likeCount.textContent = updatedCard.likes.length;
         likeButton.classList.toggle("card__like-button_is-active");
-    });
+    }).catch(console.error);
 }

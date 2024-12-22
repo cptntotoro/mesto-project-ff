@@ -66,6 +66,7 @@ export function getCards() {
  * Добавить новую карточку
  * @param name - название места
  * @param link - URL картинки
+ * @return
  */
 export function addCard(name, link) {
     return fetchUrl(
